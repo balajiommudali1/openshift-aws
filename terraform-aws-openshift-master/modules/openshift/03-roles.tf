@@ -53,12 +53,12 @@ EOF
 //  Attach the policies to the role.
 resource "aws_iam_policy_attachment" "openshift-attachment-forward-logs" {
   name       = "openshift-attachment-forward-logs"
-  roles      = ["${aws_iam_role.openshift-instance-role.name}"]
+  role      = "${aws_iam_role.openshift-instance-role.name}"
   policy_arn = "${aws_iam_policy.openshift-policy-forward-logs.arn}"
 }
 
 //  Create a instance profile for the role.
 resource "aws_iam_instance_profile" "openshift-instance-profile" {
   name  = "openshift-instance-profile"
-  roles = ["${aws_iam_role.openshift-instance-role.name}"]
+  role = "${aws_iam_role.openshift-instance-role.name}"
 }

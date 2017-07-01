@@ -21,41 +21,6 @@ resource "aws_iam_role" "openshift-instance-role" {
 EOF
 }
 
-//  This policy allows an instance to forward logs to CloudWatch, and
-//  create the Log Stream or Log Group if it doesn't exist.
-resource "aws_iam_policy" "openshift-policy-forward-logs" {
-  name        = "openshift-instance-forward-logs"
-  path        = "/"
-  description = "Allows an instance to forward logs to CloudWatch"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "logs:CreateLogGroup",
-        "logs:CreateLogStream",
-        "logs:PutLogEvents",
-        "logs:DescribeLogStreams"
-    ],
-      "Resource": [
-        "arn:aws:logs:*:*:*"
-    ]
-  }
- ]
-}
-EOF
-}
-
-
-//  Attach the policies to the role.
-resource "aws_iam_policy_attachment" "openshift-attachment-forward-logs" {
-  name = "openshift-attachment-forward-logs"
-  role = "${aws_iam_role.openshift-instance-role.name}"
-  policy_arn = "${aws_iam_policy.openshift-policy-forward-logs.arn}"
-}
 
 //  Create a instance profile for the role.
 resource "aws_iam_instance_profile" "openshift-instance-profile" {
